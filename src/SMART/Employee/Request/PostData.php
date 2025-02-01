@@ -65,7 +65,12 @@ class PostData implements PostBody
      * @return array The processed customer data.
      */
     /** @var array */
-    private $companyData;
+    private $employeeData;
+
+    public function __construct(array $employeeData)
+    {
+        $this->employeeData = $employeeData;
+    }
     
 
     /**
@@ -76,14 +81,18 @@ class PostData implements PostBody
     public function validate()
     {
         $requiredFields = [
-            'name',
-            'legal_structure',
-            'signatories' => ['forename','surname','email'],
+            'date_of_birth' => 'date_of_birth',
+            'starts_on' => 'starts_on',
+            'forename' => 'forename',
+            'surname' => 'surname',
+            'gender' => 'gender',
+            'postcode' => 'postcode',
+            // 'signatories' => ['forename','surname','email'],
         ];
 
         $emptyFields = [];
         foreach ($requiredFields as $key => $requiredField) {
-            if(empty($this->companyData)){
+            if(empty($this->employeeData)){
                 if(is_array($requiredField)){
                     foreach($requiredField as $field){
                         $emptyFields[] = $key.'_'.$field;
@@ -94,12 +103,15 @@ class PostData implements PostBody
             }
             if(is_array($requiredField)){
                 foreach($requiredField as $field){
-                    if (($data = $this->companyData[$key][$field] ?? '') == '') {
-                        $emptyFields[] = $key.'_'.$field; 
-                    }                    
+                    foreach ($this->employeeData[$key] as $sKey => $fields) {
+                        if (($data = $this->employeeData[$key][$sKey][$field] ?? '') == '') {
+                            $emptyFields[] = $key.'_'.$field; 
+                        }
+                    }
+                                        
                 }
             }else{
-                if (($data = $this->companyData[$key] ?? '') == '') {
+                if (($data = $this->employeeData[$key] ?? '') == '') {
                     $emptyFields[] = $requiredField;
                 }
             }
@@ -118,17 +130,17 @@ class PostData implements PostBody
      */
     public function toArray(): array
     {
-        return (array) $this->companyData;
+        return (array) $this->employeeData;
     }
 
     /**
-     * @param array $companyData
+     * @param array $employeeData
      *
      * @return $this
      */
-    public function setCompanyData(array $companyData): self
+    public function setEmployeeData(array $employeeData): self
     {
-        $this->companyData = $companyData;
+        $this->employeeData = $employeeData;
 
         return $this;
     }

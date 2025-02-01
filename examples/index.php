@@ -82,10 +82,10 @@ if($accessToken != ""){
         <input type="hidden" name="access_token" value="<?php echo AccessToken::get(); ?>">
         <div class="w-full" id="access-token-container"></div>
         <div class="grid grid-cols-3">
-            <a href="javascript:void(0)" @click="authorizeAdviser()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 btn btn-sm btn-warning"
+            <a x-show="!destroySessionBtn" href="javascript:void(0)" @click="authorizeAdviser()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 btn btn-sm btn-warning"
                 style="margin-top: 10px" id="create-access-token-btn">Create Adviser token</a>
 
-            <a href="javascript:void(0)" @click="authorizeEmployer()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 btn btn-sm btn-warning"
+            <a x-show="!destroySessionBtn" href="javascript:void(0)" @click="authorizeEmployer()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 btn btn-sm btn-warning"
                 style="margin-top: 10px" id="create-access-token-btn">Create Employer token</a>
 
             <a x-show="destroySessionBtn" href="/oauth2/destroy-session.php" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 btn btn-sm btn-danger" style="margin-top: 10px"
@@ -98,8 +98,32 @@ if($accessToken != ""){
     <div x-show="features" id="features" class="mt-5">
 
         <div>
-            <h3>Company</h3>
-            <div class="table-responsive mt-5">
+            <h3 class="w-full flex justify-between">
+                Company
+                <div class="">
+                    <button x-show="show_company_form == false"  @click="show_company_form = true" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                        Create New Company
+                    </button>
+                    <button x-show="show_company_form == true"  @click="show_company_form = false" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                    Company List
+                    </button>
+                </div>
+            </h3>
+            <div class="relative overflow-x-auto mt-5" x-show="show_company_form == false">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">S/N</th>
+                            <th scope="col" class="px-6 py-3">Company name</th>
+                            <th scope="col" class="px-6 py-3">Registration number</th>
+                            <th scope="col" class="px-6 py-3">Legal structure</th>
+                            <th scope="col" class="px-6 py-3">Postcode</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div x-show="show_company_form == true" class="table-responsive mt-5">
                 <table class="w-full table table-striped table-bordered table-hover table-sm">
                     <tr>
                         <td>
@@ -163,8 +187,9 @@ if($accessToken != ""){
                     
                 </table>
             </div>
+
         </div>
-        <div class="mt-3">
+        <div class="mt-10">
             <h3 class="w-full flex justify-between">
                 Employee
                 <div class="">
@@ -176,12 +201,39 @@ if($accessToken != ""){
                     </button>
                 </div>
             </h3>
+            <div class="w-full">
+                <?php  if(isset($_SESSION['employee_error']) && $_SESSION['employee_error'] != "" ) { ?>
+                    <div class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
+                        <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div>
+                            <span class="font-medium">Error!</span> <?= $_SESSION['employee_error']; ?>
+                        </div>
+                    </div>
+                    <?php $_SESSION['employee_error'] = ""; ?>
+                <?php } ?>
+                <?php  if(isset($_SESSION['employee_success']) && $_SESSION['employee_success'] != "" ) { ?>
+                    <div class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800" role="alert">
+                        <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div>
+                            <span class="font-medium">Success!</span> <?= $_SESSION['employee_success']; ?>
+                        </div>
+                    </div>
+                    <?php $_SESSION['employee_success'] = ""; ?>
+                <?php } ?>
+
+            </div>
             <div class="relative overflow-x-auto mt-5" x-show="show_employee_form == false">
                 <?php  if(!empty($employees)){ ?>
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="px-6 py-3">ID</th>
+                                <th scope="col" class="px-6 py-3">S/N</th>
                                 <th scope="col" class="px-6 py-3">Employee ID</th>
                                 <th scope="col" class="px-6 py-3">Forename</th>
                                 <th scope="col" class="px-6 py-3">Surname</th>
@@ -203,11 +255,11 @@ if($accessToken != ""){
                 <?php } ?>
             </div>
             <div x-show="show_employee_form == true">
-            <table class="w-full table table-striped table-bordered table-hover table-sm">
+                <table class="w-full table table-striped table-bordered table-hover table-sm">
                 <tr>
                     <td>
                         <p>Create New Employee</p>
-                        <form action="employee/create.php" method="post">
+                        <form action="<?= $base_url; ?>/employee/create.php" method="post">
                             <input type="hidden" name="company_id" value="<?= $company_id ?>">
                             <div class="w-full grid grid-cols-3 gap-3 mt-2">
                                 <div class="form-group">
@@ -239,7 +291,7 @@ if($accessToken != ""){
                                     <select required name="gender" x-model="employee.gender" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="">Select</option>
                                         <option value="Male">Male</option>
-                                        <option value="Male">Female</option>
+                                        <option value="Female">Female</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -260,7 +312,6 @@ if($accessToken != ""){
 
 
                 </table>
-
             </div>
         </div>
     </div>
@@ -283,6 +334,7 @@ if($accessToken != ""){
                 client_id:'',
                 client_secret:'',
                 show_employee_form:false,
+                show_company_form:false,
                 company:{
                     registration_number:'',
                     legal_structure:'Limited Company',
