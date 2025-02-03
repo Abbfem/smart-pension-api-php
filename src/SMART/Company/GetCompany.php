@@ -2,7 +2,7 @@
 
 namespace SMART\Company;
 
-use SMART\Company\GetRequest;
+use SMART\Company\Request\GetRequest;
 
 
 class GetCompany extends GetRequest

@@ -2,8 +2,8 @@
 
 namespace SMART\Company;
 
-use SMART\Company\PutRequest;
-use SMART\Company\NewPostBody;
+use SMART\Company\Request\PutRequest;
+use SMART\Company\Request\NewPostBody;
 
 
 class UpdateCompany extends PutRequest

@@ -2,13 +2,14 @@
 
 namespace SMART\Company\Request;
 
-use SMART\GovernmentTestScenario\GovernmentTestScenario;
 use SMART\HTTP\Header;
 use SMART\Request\RequestHeader;
 use SMART\Request\RequestHeaderValue;
 use SMART\Request\RequestWithAccessToken;
+use SMART\Request\RequestWithOutAccessToken;
+use SMART\GovernmentTestScenario\GovernmentTestScenario;
 
-abstract class CompanyRequest extends RequestWithAccessToken
+abstract class CompanyRequestWithoutToken extends RequestWithOutAccessToken
 {
     
 

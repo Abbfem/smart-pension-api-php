@@ -110,6 +110,33 @@ if($accessToken != ""){
                 </div>
             </h3>
             <div class="relative overflow-x-auto mt-5" x-show="show_company_form == false">
+            <div class="w-full">
+                <?php  if(isset($_SESSION['company_error']) && $_SESSION['company_error'] != "" ) { ?>
+                    <div class="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
+                        <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div>
+                            <span class="font-medium">Error!</span> <?= $_SESSION['company_error']; ?>
+                        </div>
+                    </div>
+                    <?php $_SESSION['company_error'] = ""; ?>
+                <?php } ?>
+                <?php  if(isset($_SESSION['company_success']) && $_SESSION['company_success'] != "" ) { ?>
+                    <div class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800" role="alert">
+                            <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                            </svg>
+                            <span class="sr-only">Info</span>
+                            <div>
+                                <span class="font-medium">Success!</span> <?= $_SESSION['company_success']; ?>
+                            </div>
+                        </div>
+                        <?php $_SESSION['company_success'] = ""; ?>
+                    <?php } ?>
+
+                </div>
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
@@ -128,59 +155,87 @@ if($accessToken != ""){
                     <tr>
                         <td>
                             <p>Create New Company</p>
-                            <div class="w-full grid grid-cols-3 gap-3 mt-2">
-                                <div class="form-group">
-                                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Name</label>
-                                    <input
-                                        class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        type="text" id="company_name"  name="name" placeholder="name" x-model="company.name" value="<?= $_SESSION['company']['name'] ?? '' ?>" />
+                            <form action="<?= $base_url; ?>/company/create.php" method="post">
+                                <div class="w-full grid grid-cols-3 gap-3 mt-2">
+                                    <div class="form-group">
+                                        <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Name</label>
+                                        <input
+                                            class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            type="text" id="company_name"  name="name" placeholder="name" x-model="company.name" value="<?= $_SESSION['company']['name'] ?? '' ?>" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Registration Number</label>
+                                        <input
+                                            class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            type="text" id="company_registration_number" name="registration_number"
+                                            placeholder="reg no" x-model="company.registration_number" value="<?= $_SESSION['company']['registration_number'] ?? '' ?>" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Legal Structure</label>
+                                        <input
+                                            class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            type="text" id="company_legal_structure" name="legal_structure"
+                                            x-model="company.legal_structure" value="<?= $_SESSION['company']['legal_structure'] ?? 'Limited Company' ?>" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Signatory Email</label>
+                                        <input
+                                            class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            type="email" id="company_signatory_email" name="signatory_email"
+                                            x-model="company.signatory_email" value="<?= $_SESSION['company']['signatory_email'] ?? 'john@doe.fr' ?>" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Signatory Forename</label>
+                                        <input
+                                            class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            type="text" id="company_signatory_forename" name="signatory_forename"
+                                            value="forename" x-model="company.signatory_forename" value="<?= $_SESSION['company']['signatory_forename'] ?? '' ?>" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Signatory Surname</label>
+                                        <input
+                                            class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            type="text" id="company_signatory_surname" name="signatory_surname"
+                                            x-model="company.signatory_surname" value="<?= $_SESSION['company']['signatory_surname'] ?? '' ?>" />
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Admin Email</label>
+                                        <input
+                                            class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            type="email" name="admin_email"
+                                            x-model="company.admin_email" value="<?= $_SESSION['company']['admin_email'] ?? 'john@doe.fr' ?>" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">admin Forename</label>
+                                        <input
+                                            class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            type="text" id="company_admin_forename" name="admin_forename"
+                                            value="forename" x-model="company.admin_forename" value="<?= $_SESSION['company']['admin_forename'] ?? '' ?>" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">admin Surname</label>
+                                        <input
+                                            class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            type="text" id="company_admin_surname" name="admin_surname"
+                                            x-model="company.admin_surname" value="<?= $_SESSION['company']['admin_surname'] ?? '' ?>" />
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tax Relief Basis Type</label>
+                                        <input
+                                            class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            type="text" id="company_tax_relief_basis_type" name="tax_relief_basis_type"
+                                            x-model="company.tax_relief_basis_type" value="<?= $_SESSION['company']['tax_relief_basis_type'] ?? '' ?>" />
+                                    </div>
+                                </div> 
+                                <div class="mt-5">
+                                    <button  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 btn btn-sm btn-primary">Create</button>
                                 </div>
-                                <div class="form-group">
-                                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Registration Number</label>
-                                    <input
-                                        class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        type="text" id="company_registration_number" name="registration_number"
-                                        placeholder="reg no" x-model="company.registration_number" value="<?= $_SESSION['company']['registration_number'] ?? '' ?>" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Legal Structure</label>
-                                    <input
-                                        class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        type="text" id="company_legal_structure" name="legal_structure"
-                                        x-model="company.legal_structure" value="<?= $_SESSION['company']['legal_structure'] ?? 'Limited Company' ?>" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Signatory Email</label>
-                                    <input
-                                        class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        type="email" id="company_signatory_email" name="signatory_email"
-                                        x-model="company.signatory_email" value="<?= $_SESSION['company']['signatory_email'] ?? 'john@doe.fr' ?>" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Signatory Forename</label>
-                                    <input
-                                        class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        type="text" id="company_signatory_forename" name="signatory_forename"
-                                        value="forename" x-model="company.signatory_forename" value="<?= $_SESSION['company']['signatory_forename'] ?? '' ?>" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Signatory Surname</label>
-                                    <input
-                                        class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        type="text" id="company_signatory_surname" name="signatory_surname"
-                                        x-model="company.signatory_surname" value="<?= $_SESSION['company']['signatory_surname'] ?? '' ?>" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tax Relief Basis Type</label>
-                                    <input
-                                        class="company_form_data bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        type="text" id="company_tax_relief_basis_type" name="tax_relief_basis_type"
-                                        x-model="company.tax_relief_basis_type" value="<?= $_SESSION['company']['tax_relief_basis_type'] ?? '' ?>" />
-                                </div>
-                            </div> 
-                            <div class="mt-5">
-                                <button  @click="createNewCompany()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 btn btn-sm btn-primary">Create</button>
-                            </div>
+                            </form>
                         </td>
                     </tr>
                    

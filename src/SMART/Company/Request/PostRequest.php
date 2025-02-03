@@ -1,11 +1,11 @@
 <?php
 
-namespace SMART\Company;
+namespace SMART\Company\Request;
 
 use SMART\Request\PostBody;
 use SMART\Response\Response;
 use SMART\Request\RequestMethod;
-use SMART\Company\CompanyRequest;
+use SMART\Company\Request\CompanyRequest;
 
 abstract class PostRequest extends CompanyRequest
 {

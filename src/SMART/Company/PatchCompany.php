@@ -2,8 +2,8 @@
 
 namespace SMART\Company;
 
-use SMART\Company\NewPostBody;
-use SMART\Company\PatchRequest;
+use SMART\Company\Request\NewPostBody;
+use SMART\Company\Request\PatchRequest;
 
 
 

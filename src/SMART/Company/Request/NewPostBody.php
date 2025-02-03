@@ -1,6 +1,6 @@
 <?php
 
-namespace SMART\Company;
+namespace SMART\Company\Request;
 
 use SMART\Exceptions\InvalidPostBodyException;
 use SMART\Request\PostBody;
@@ -9,6 +9,12 @@ class NewPostBody implements PostBody
 {
     /** @var array */
     private $companyData;
+
+    public function __construct(array $companyData)
+    {
+        $this->companyData = $companyData;
+    }
+    
     
 
     /**
@@ -19,11 +25,11 @@ class NewPostBody implements PostBody
     public function validate()
     {
         $requiredFields = [
-            'name',
-            'legal_structure',
+            'name' => 'name',
+            'legal_structure' => 'legal_structure',
             'signatories' => ['forename','surname','email'],
+            'admins' => ['forename','surname','email'],
         ];
-
         $emptyFields = [];
         foreach ($requiredFields as $key => $requiredField) {
             if(empty($this->companyData)){
@@ -37,9 +43,12 @@ class NewPostBody implements PostBody
             }
             if(is_array($requiredField)){
                 foreach($requiredField as $field){
-                    if (($data = $this->companyData[$key][$field] ?? '') == '') {
-                        $emptyFields[] = $key.'_'.$field; 
-                    }                    
+                    foreach ($this->companyData[$key] as $sKey => $fields) {
+                        if (($data = $this->companyData[$key][$sKey][$field] ?? '') == '') {
+                            $emptyFields[] = $key.'_'.$field; 
+                        }
+                    }
+                                        
                 }
             }else{
                 if (($data = $this->companyData[$key] ?? '') == '') {

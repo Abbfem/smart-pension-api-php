@@ -1,9 +1,9 @@
 <?php
 
-namespace SMART\Company;
+namespace SMART\Company\Request;
 
 use SMART\Request\RequestMethod;
-use SMART\Company\CompanyRequest;
+use SMART\Company\Request\CompanyRequest;
 
 abstract class GetRequest extends CompanyRequest
 {
