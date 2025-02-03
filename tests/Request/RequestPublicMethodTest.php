@@ -3,13 +3,14 @@
 namespace SMART\Test\Request;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use SMART\Hello\HelloWorldRequest;
 use PHPUnit\Framework\TestCase;
+use SMART\Nationality\Countries;
+use SMART\Hello\HelloWorldRequest;
+use GuzzleHttp\Handler\MockHandler;
 
 class RequestPublicMethodTest extends TestCase
 {
@@ -25,10 +26,10 @@ class RequestPublicMethodTest extends TestCase
         $mockedClient = new Client(['handler' => $stack]);
 
         // Call the API
-        (new HelloWorldRequest())
+        (new Countries())
             ->setClient($mockedClient)
             ->setServiceVersion('2.0')
-            ->setContentType('xml')
+            ->setContentType('json')
             ->fire();
 
         // Asserts
@@ -38,6 +39,6 @@ class RequestPublicMethodTest extends TestCase
         $guzzleRequest = $container[0]['request'];
         $acceptHeader = $guzzleRequest->getHeader('Accept');
         $this->assertCount(1, $acceptHeader);
-        $this->assertEquals('application/vnd.smart.2.0+xml', $acceptHeader[0]);
+        $this->assertEquals('application/vnd.smart.2.0+json', $acceptHeader[0]);
     }
 }

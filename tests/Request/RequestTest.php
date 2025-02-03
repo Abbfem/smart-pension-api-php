@@ -55,7 +55,7 @@ abstract class RequestTest extends TestCase
 
     protected function assertSandboxHost(string $host)
     {
-        $this->assertEquals('test-api.service.smart.gov.uk', $host);
+        $this->assertEquals('api.sandbox.autoenrolment.co.uk', $host);
     }
 
     protected function assertHttps(string $scheme)

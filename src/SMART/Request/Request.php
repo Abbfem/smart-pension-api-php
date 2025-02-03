@@ -73,9 +73,9 @@ abstract class Request
             // headers set for this request
             $this->headers,
             // and more
-            // [
-            //     RequestHeader::ACCEPT => $this->getAcceptHeader(),
-            // ]
+            [
+                RequestHeader::ACCEPT => $this->getAcceptHeader(),
+            ]
         );
     }
 
