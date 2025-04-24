@@ -13,19 +13,18 @@ class Patch extends PatchRequest
     /** @var string */
     private $group_id;
 
-
     /**
-     * Update a specific payment configuration for a company.
+     * Update a payment configuration for a specific company.
      *
      * @param string $company_id Required. The ID of the company.
-     *        Example: '859'
+     *        Example: '861'
      * @param string $group_id Required. The ID of the payment configuration.
-     *        Example: '13'
-     * @param PostData $postBody The payment configuration details in JSON format with the following fields:
+     *        Example: '15'
+     * @param PostData $postBody The payment configuration data in JSON format with the following fields:
      *      - 'name' (string) Required. The name of the payment configuration.
      *      - 'employee_percentage' (number) The employee's contribution percentage.
      *      - 'company_percentage' (number) The company's contribution percentage.
-     *      - 'payment_frequency' (string) Required. Payment frequency.
+     *      - 'payment_frequency' (string) Required. Frequency of the payment.
      *          Allowed values:
      *              - 'annually'
      *              - 'weekly'
@@ -41,6 +40,9 @@ class Patch extends PatchRequest
      *
      * @return void
      */
+
+
+    
 
     public function __construct(string $company_id, string $group_id, PostData $postBody)
     {
