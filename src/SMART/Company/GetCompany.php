@@ -9,10 +9,10 @@ class GetCompany extends GetRequest
 {
     /** @var string */
     private $company_id;
-
-    public function __construct(string $company_id)
-    {
-        
+    /** @var string */
+    
+    public function __construct(string $company_id, private array $include = [])
+    {        
         $this->company_id = $company_id;
     }
 
@@ -21,7 +21,9 @@ class GetCompany extends GetRequest
      */
     protected function getQueryString(): array
     {
-        return [];
+        return [
+            'include' => $this->include,
+        ];
     }
 
     protected function getCompanyApiPath(): string
