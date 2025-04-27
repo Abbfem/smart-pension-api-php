@@ -5,9 +5,9 @@ namespace SMART\Company\Request;
 use SMART\Request\PostBody;
 use SMART\Response\Response;
 use SMART\Request\RequestMethod;
-use SMART\Company\Request\CompanyRequest;
+use SMART\Company\Request\CompanyRequestWithoutToken;
 
-abstract class PostRequest extends CompanyRequest
+abstract class PostRequest extends CompanyRequestWithoutToken
 {
     /** @var PostBody */
     protected $postBody;
