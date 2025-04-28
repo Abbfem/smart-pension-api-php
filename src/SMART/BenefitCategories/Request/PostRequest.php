@@ -1,6 +1,6 @@
 <?php
 
-namespace SMART\Contributions\Request;
+namespace SMART\BenefitCategories\Request;
 
 use SMART\Request\PostBody;
 use SMART\Response\Response;

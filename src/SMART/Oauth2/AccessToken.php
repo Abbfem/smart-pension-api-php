@@ -11,6 +11,7 @@ class AccessToken
     const SESSION_ADVISER_KEY = 'smart_access_token';
     const SESSION_EMPLOYER_KEY = 'smart_access_token';
     const SESSION_KEY = 'smart_access_token';
+    const SESSION_KEY_TYPE = 'smart_access_token_type';
 
     public static function exists(): bool
     {
@@ -22,7 +23,14 @@ class AccessToken
      */
     public static function get()
     {
-        return isset($_SESSION[self::SESSION_KEY]) ? unserialize($_SESSION[self::SESSION_KEY]) : null;
+        if(isset($_SESSION[self::SESSION_KEY]) && $_SESSION[self::SESSION_KEY] == "string"){
+            return isset($_SESSION[self::SESSION_KEY]) ? $_SESSION[self::SESSION_KEY] : null;
+        }
+
+        if(isset($_SESSION[self::SESSION_KEY]) && $_SESSION[self::SESSION_KEY] == "serialize"){
+            return isset($_SESSION[self::SESSION_KEY]) ? unserialize($_SESSION[self::SESSION_KEY]) : null;
+        }
+        
     }
 
     /**
@@ -34,12 +42,17 @@ class AccessToken
     {
         if ($accessToken instanceof AccessTokenInterface) {
             $accessToken = serialize($accessToken);
+            $_SESSION[self::SESSION_KEY_TYPE] = "serialize";
+        }else{
+            $_SESSION[self::SESSION_KEY_TYPE] = "string";
         }
 
         if (gettype($accessToken) !== 'string') {
             throw new InvalidVariableTypeException('Access token must be string or implement AccessTokenInterface.');
         }
 
+
+        $_SESSION[self::SESSION_KEY] = $accessToken;
         $_SESSION[self::SESSION_KEY] = $accessToken;
     }
 
