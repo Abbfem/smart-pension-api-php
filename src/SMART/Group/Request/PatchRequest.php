@@ -5,9 +5,9 @@ namespace SMART\Group\Request;
 use SMART\Request\PostBody;
 use SMART\Response\Response;
 use SMART\Request\RequestMethod;
-use SMART\Group\Request\EmployeeRequest;
+use SMART\Group\Request\GroupRequest;
 
-abstract class PatchRequest extends EmployeeRequest
+abstract class PatchRequest extends GroupRequest
 {
     /** @var PostBody */
     protected $postBody;

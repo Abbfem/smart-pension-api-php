@@ -5,9 +5,9 @@ namespace SMART\Group\Request;
 use SMART\Request\PostBody;
 use SMART\Response\Response;
 use SMART\Request\RequestMethod;
-use SMART\Group\Request\EmployeeRequest;
+use SMART\Group\Request\GroupRequest;
 
-abstract class DeleteRequest extends EmployeeRequest
+abstract class DeleteRequest extends GroupRequest
 {
     
 

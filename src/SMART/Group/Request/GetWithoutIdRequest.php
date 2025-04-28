@@ -3,10 +3,10 @@
 namespace SMART\Group\Request;
 
 use SMART\Request\RequestMethod;
-use SMART\Group\Request\EmployeeWithoutIdRequest;
+use SMART\Group\Request\GroupWithoutIdRequest;
 
 
-abstract class GetWithoutIdRequest extends EmployeeWithoutIdRequest
+abstract class GetWithoutIdRequest extends GroupWithoutIdRequest
 {
     protected function getURI(): string
     {

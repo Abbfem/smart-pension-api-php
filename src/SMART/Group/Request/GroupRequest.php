@@ -8,7 +8,7 @@ use SMART\Request\RequestHeader;
 use SMART\Request\RequestHeaderValue;
 use SMART\Request\RequestWithAccessToken;
 
-abstract class EmployeeRequest extends RequestWithAccessToken
+abstract class GroupRequest extends RequestWithAccessToken
 {
     
     /** @var string Company ID */
@@ -41,7 +41,7 @@ abstract class EmployeeRequest extends RequestWithAccessToken
      * @throws \SMART\Exceptions\InvalidVariableValueException
      * @throws \ReflectionException
      *
-     * @return EmployeeRequest
+     * @return GroupRequest
      */
   
    

@@ -3,10 +3,10 @@
 namespace SMART\Group\Request;
 
 use SMART\Request\RequestMethod;
-use SMART\Group\Request\EmployeeRequest;
+use SMART\Group\Request\GroupRequest;
 
 
-abstract class GetRequest extends EmployeeRequest
+abstract class GetRequest extends GroupRequest
 {
     protected function getURI(): string
     {

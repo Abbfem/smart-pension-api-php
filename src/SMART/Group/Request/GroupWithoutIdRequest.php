@@ -8,13 +8,13 @@ use SMART\Request\RequestHeader;
 use SMART\Request\RequestHeaderValue;
 use SMART\Request\RequestWithAccessToken;
 
-abstract class EmployeeWithoutIdRequest extends RequestWithAccessToken
+abstract class GroupWithoutIdRequest extends RequestWithAccessToken
 {
     
     
     protected function getApiPath(): string
     {
-        return "/employees".$this->getSubApiPath();
+        return "/groups".$this->getSubApiPath();
     }
 
     protected function getHeaders(): array
@@ -33,7 +33,7 @@ abstract class EmployeeWithoutIdRequest extends RequestWithAccessToken
      * @throws \SMART\Exceptions\InvalidVariableValueException
      * @throws \ReflectionException
      *
-     * @return EmployeeRequest
+     * @return GroupRequest
      */
   
    
