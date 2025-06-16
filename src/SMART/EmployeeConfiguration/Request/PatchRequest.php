@@ -5,7 +5,7 @@ namespace SMART\EmployeeConfiguration\Request;
 use SMART\Request\PostBody;
 use SMART\Response\Response;
 use SMART\Request\RequestMethod;
-use SMART\Contributions\Request\ConfigurationRequest;
+use SMART\EmployeeConfiguration\Request\ConfigurationRequest;
 
 
 abstract class PatchRequest extends ConfigurationRequest

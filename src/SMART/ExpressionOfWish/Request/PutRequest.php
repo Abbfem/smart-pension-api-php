@@ -1,13 +1,13 @@
 <?php
 
-namespace SMART\Contributions\Request;
+namespace SMART\ExpressionOfWish\Request;
 
 use SMART\Request\PostBody;
 use SMART\Response\Response;
 use SMART\Request\RequestMethod;
-use SMART\Contributions\Request\ContributionsRequest;
+use SMART\ExpressionOfWish\Request\ExpressionOfWishRequest;
 
-abstract class PutRequest extends ContributionsRequest
+abstract class PutRequest extends ExpressionOfWishRequest
 {
     /** @var PostBody */
     protected $postBody;

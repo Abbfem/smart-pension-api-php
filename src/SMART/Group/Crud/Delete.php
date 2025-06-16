@@ -1,6 +1,5 @@
 <?php
-
-namespace SMART\Group;
+namespace SMART\Group\Crud;
 
 use SMART\Group\Request\DeleteRequest;
 

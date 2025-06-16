@@ -1,5 +1,4 @@
 <?php
-
 namespace SMART\BenefitCategories\Request;
 
 use SMART\Request\PostBody;
@@ -24,13 +23,6 @@ abstract class PostRequest extends BenefitCategoriesRequest
         return RequestMethod::POST;
     }
 
-    /**
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \SMART\Exceptions\InvalidPostBodyException
-     * @throws \SMART\Exceptions\MissingAccessTokenException
-     *
-     * @return mixed|Response
-     */
     public function fire()
     {
         $this->postBody->validate();

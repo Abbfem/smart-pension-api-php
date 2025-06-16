@@ -15,7 +15,7 @@ class GetExpressionOfWish extends GetRequest
      * @param string $company_id Required. The ID of the company. Example: '194'.
      * @param string $employee_id Required. The ID of the company. Example: '194'.
      *
-     * @return array The contributions data for the given company and contributions.
+     * @return array The wish expressions data for the given company and wish expressions.
      */
 
     public function __construct(string $company_id, public string $employee_id)

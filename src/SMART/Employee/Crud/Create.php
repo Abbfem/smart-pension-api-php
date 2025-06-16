@@ -1,5 +1,4 @@
 <?php
-
 namespace SMART\Employee\Crud;
 
 use SMART\Employee\Request\PostData;

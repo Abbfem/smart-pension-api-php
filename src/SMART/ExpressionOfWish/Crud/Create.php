@@ -1,9 +1,9 @@
 <?php
 
-namespace SMART\Contributions\Crud;
+namespace SMART\ExpressionOfWish\Crud;
 
-use SMART\Contributions\Request\PostData;
-use SMART\Contributions\Request\PostRequest;
+use SMART\ExpressionOfWish\Request\PostData;
+use SMART\ExpressionOfWish\Request\PostRequest;
 
 
 class Create extends PostRequest

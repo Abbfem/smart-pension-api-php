@@ -1,6 +1,5 @@
 <?php
-
-namespace SMART\Employee;
+namespace SMART\Employee\Crud;
 
 use SMART\Employee\Request\DeleteRequest;
 

@@ -1,6 +1,5 @@
 <?php
-
-namespace SMART\Contributions\Crud;
+namespace SMART\ExpressionOfWish\Crud;
 
 
 use SMART\ExpressionOfWish\Request\PostData;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SMART\Contributions\Request;
+namespace SMART\EmployeeConfiguration\Request;
 
 
 use SMART\HTTP\Header;

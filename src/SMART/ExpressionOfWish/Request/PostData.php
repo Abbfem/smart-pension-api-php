@@ -1,5 +1,4 @@
 <?php
-
 namespace SMART\ExpressionOfWish\Request;
 
 use SMART\Exceptions\InvalidPostBodyException;

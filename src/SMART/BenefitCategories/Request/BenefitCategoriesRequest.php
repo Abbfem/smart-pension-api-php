@@ -1,7 +1,5 @@
 <?php
-
 namespace SMART\BenefitCategories\Request;
-
 
 use SMART\HTTP\Header;
 use SMART\Request\RequestHeader;
@@ -35,21 +33,5 @@ abstract class BenefitCategoriesRequest extends RequestWithAccessToken
     }
 
     
-    /**
-     * @param string $govTestScenario
-     *
-     * @throws \SMART\Exceptions\InvalidVariableValueException
-     * @throws \ReflectionException
-     *
-     * @return ContributionsRequest
-     */
-  
-   
-
-    /**
-     * Get VAT Api path, the path should be after {$this->vrn}.
-     *
-     * @return string
-     */
     abstract protected function getSubApiPath(): string;
 }

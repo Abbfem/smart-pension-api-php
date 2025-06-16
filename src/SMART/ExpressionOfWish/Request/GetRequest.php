@@ -1,12 +1,11 @@
 <?php
-
-namespace SMART\Contributions\Request;
+namespace SMART\ExpressionOfWish\Request;
 
 use SMART\Request\RequestMethod;
-use SMART\Contributions\Request\ContributionsRequest;
+use SMART\ExpressionOfWish\Request\ExpressionOfWishRequest;
 
 
-abstract class GetRequest extends ContributionsRequest
+abstract class GetRequest extends ExpressionOfWishRequest
 {
     protected function getURI(): string
     {
