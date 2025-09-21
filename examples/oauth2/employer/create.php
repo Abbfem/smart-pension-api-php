@@ -2,8 +2,8 @@
 
 use SMART\Scope\Scope;
 use SMART\Oauth2\Provider;
+use Illuminate\Support\Facades\Session;
 
-session_start();
 require_once __DIR__.'/../../../vendor/autoload.php';
 require_once __DIR__.'/../../helpers.php';
 require_once __DIR__.'/../../config.php';
@@ -13,10 +13,10 @@ if (!isset($_GET['client_id']) || !isset($_GET['client_secret'])) {
 }
 
 
-$_SESSION['client_id'] = $_GET['client_id'];
-$_SESSION['client_secret'] = $_GET['client_secret'];
-$_SESSION['callback_uri'] = $employerRedirectUri;
-$_SESSION['caller'] = '/examples/index.php';
+Session::put('client_id', $_GET['client_id']);
+Session::put('client_secret', $_GET['client_secret']);
+Session::put('callback_uri', $employerRedirectUri);
+Session::put('caller', '/examples/index.php');
 $provider = new Provider(
     $clientId,
     $clientSecret,

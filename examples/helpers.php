@@ -1,7 +1,8 @@
 <?php
 
-use SMART\Oauth2\AccessToken;
 use SMART\Oauth2\Provider;
+use SMART\Oauth2\AccessToken;
+use Illuminate\Support\Facades\Session;
 
 function baseURL()
 {
@@ -11,14 +12,14 @@ function baseURL()
 
 function refreshAccessTokenIfNeeded()
 {
-    if (!isset($_SESSION['client_id'])) {
+    if (!Session::has('client_id')) {
         return;
     }
 
     $provider = new Provider(
-        $_SESSION['client_id'],
-        $_SESSION['client_secret'],
-        $_SESSION['callback_uri']
+        Session::get('client_id'),
+        Session::get('client_secret'),
+        Session::get('callback_uri')
     );
 
     try {

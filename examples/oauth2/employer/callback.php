@@ -8,7 +8,7 @@ use SMART\Oauth2\AccessToken;
 require_once __DIR__.'/../../../vendor/autoload.php';
 require_once __DIR__.'/../../helpers.php';
 require_once __DIR__.'/../../config.php';
-session_start();
+
 
 if (!isset($_GET['code'])) {
     exit('Error: Please fill both client id and client secret before test again.');

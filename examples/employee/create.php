@@ -2,11 +2,10 @@
 
 use SMART\Employee\Crud\Create;
 use SMART\Employee\Request\PostData;
+use Illuminate\Support\Facades\Session;
 
 require_once __DIR__.'/../../vendor/autoload.php';
 require_once __DIR__.'/../helpers.php';
-
-session_start();
 
 
 $data = [
@@ -27,8 +26,8 @@ if (
     !isset($_POST['gender']) ||
     !isset($_POST['postcode'])
 ) {
-    $_SESSION['employee'] = $data;
-    $_SESSION['employee_error'] = 'ERROR: Please fill company_id, date_of_birth, starts_on, forename, surname, gender, postcode and submit the form again';
+    Session::put('employee', $data);
+    Session::put('employee_error', 'ERROR: Please fill company_id, date_of_birth, starts_on, forename, surname, gender, postcode and submit the form again');
     header('Location: /index.php');
     exit;
 }
@@ -41,12 +40,12 @@ try {
     $response = $request->fire();
     $result = $response->getArray();
     if(!empty($result)){
-        $_SESSION['employee_success'] = "Employee created successfully";
+        Session::put('employee_success', "Employee created successfully");
     }else{
-        $_SESSION['employee_error'] = "Unable to create new employee";
+        Session::put('employee_error', "Unable to create new employee");
     }
 } catch (\Throwable $th) {
-    $_SESSION['employee_error'] = $th->getMessage();
+    Session::put('employee_error', $th->getMessage());
 }
 
 header('Location: /index.php');

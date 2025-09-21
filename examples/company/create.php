@@ -2,13 +2,11 @@
 
 use SMART\Company\CreateCompany;
 use SMART\Company\Request\NewPostBody;
+use Illuminate\Support\Facades\Session;
 
 
 require_once __DIR__.'/../../vendor/autoload.php';
 require_once __DIR__.'/../helpers.php';
-
-session_start();
-
 
 $data = [
     'name' => $_POST['name'],
@@ -30,16 +28,16 @@ try {
     $response = $request->fire();
     $result = $response->getArray();
     if(!empty($result)){
-        $_SESSION['company_success'] = "Company created successfully";
+        Session::put('company_success', "Company created successfully");
         if(!empty($result) && isset($result['authorization_redirect_uri'])){
             header('Location: '.$result['authorization_redirect_uri']);
             exit;
         }  
     }else{
-        $_SESSION['company_error'] = "Unable to create new company";
+        Session::put('company_error', "Unable to create new company");
     }
 } catch (\Throwable $th) {
-    $_SESSION['company_error'] = $th->getMessage();
+    Session::put('company_error', $th->getMessage());
 }
 
 header('Location: /index.php');

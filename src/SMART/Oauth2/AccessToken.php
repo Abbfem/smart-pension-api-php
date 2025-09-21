@@ -2,6 +2,7 @@
 
 namespace SMART\Oauth2;
 
+use Illuminate\Support\Facades\Session;
 use SMART\Exceptions\InvalidVariableTypeException;
 use SMART\Exceptions\MissingAccessTokenException;
 use League\OAuth2\Client\Token\AccessTokenInterface;
@@ -15,7 +16,7 @@ class AccessToken
 
     public static function exists(): bool
     {
-        return isset($_SESSION[self::SESSION_KEY]);
+        return Session::has(self::SESSION_KEY);
     }
 
     /**
@@ -23,12 +24,13 @@ class AccessToken
      */
     public static function get()
     {
-        if(isset($_SESSION[self::SESSION_KEY]) && $_SESSION[self::SESSION_KEY] == "string"){
-            return isset($_SESSION[self::SESSION_KEY]) ? $_SESSION[self::SESSION_KEY] : null;
+
+        if(Session::get(self::SESSION_KEY_TYPE) == "string"){
+            return Session::get(self::SESSION_KEY);
         }
 
-        if(isset($_SESSION[self::SESSION_KEY]) && $_SESSION[self::SESSION_KEY] == "serialize"){
-            return isset($_SESSION[self::SESSION_KEY]) ? unserialize($_SESSION[self::SESSION_KEY]) : null;
+        if(Session::get(self::SESSION_KEY_TYPE) == "serialize"){
+            return Session::get(self::SESSION_KEY) ? unserialize(Session::get(self::SESSION_KEY)) : null;
         }
         
     }
@@ -42,18 +44,15 @@ class AccessToken
     {
         if ($accessToken instanceof AccessTokenInterface) {
             $accessToken = serialize($accessToken);
-            $_SESSION[self::SESSION_KEY_TYPE] = "serialize";
+            Session::put(self::SESSION_KEY_TYPE, "serialize");
         }else{
-            $_SESSION[self::SESSION_KEY_TYPE] = "string";
+            Session::put(self::SESSION_KEY_TYPE, "string");
         }
 
         if (gettype($accessToken) !== 'string') {
             throw new InvalidVariableTypeException('Access token must be string or implement AccessTokenInterface.');
         }
-
-
-        $_SESSION[self::SESSION_KEY] = $accessToken;
-        $_SESSION[self::SESSION_KEY] = $accessToken;
+        Session::put(self::SESSION_KEY, $accessToken);
     }
 
     /**
