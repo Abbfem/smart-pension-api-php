@@ -1,6 +1,6 @@
 <?php
 
-namespace SMART\Contributions;
+namespace SMART\Contributions\Crud;
 
 use SMART\Contributions\Request\DeleteRequest;
 
