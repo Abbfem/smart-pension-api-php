@@ -20,7 +20,8 @@
     "autoload": {
         "psr-4": {
             "SMART\\": "src/SMART/",
-            "PeoplesPension\\": "src/PeoplesPension/"
+            "PeoplesPension\\": "src/PeoplesPension/",
+            "NestPension\\": "src/NestPension/"
         }
     },
     "autoload-dev": {

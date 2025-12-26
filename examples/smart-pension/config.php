@@ -1,7 +1,7 @@
 <?php
 
-$clientId = 'P7UgBrduMhhmoiTcV9ThF0LKDAcCrudxkBB6dGJzUkY';
-$clientSecret = 'oEwrq6X9doxnoxgwkydR-SGnQASXLuwlz8MlcHjDkaE';
+$clientId = '';
+$clientSecret = '';
 $serverToken = '';
 $base_url = "http://abbpaysmartpension.xyz";
 $adviserRedirectUri = 'https://abbpaysmartpension.xyz/oauth2/adviser/callback.php';
