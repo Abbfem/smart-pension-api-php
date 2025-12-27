@@ -29,13 +29,9 @@ class GetAccounts extends GetRequest
 
         if ($response->isSuccess()) {
             $data = $response->getData();
-            // getData() returns stdClass or array of stdClass, convert to array for iteration
-            if (is_object($data)) {
-                $data = (array) $data;
-            }
             if (is_array($data)) {
                 foreach ($data as $item) {
-                    $accounts[] = AccountSummary::fromArray((array) $item);
+                    $accounts[] = AccountSummary::fromArray($item);
                 }
             }
         }

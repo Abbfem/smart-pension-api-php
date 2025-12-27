@@ -103,8 +103,8 @@ class Response
      */
     public function getData(): mixed
     {
-        $json = $this->getJson();
-        return $json->data ?? null;
+        $json = $this->getJson(true);
+        return $json['data'] ?? null;
     }
 
     /**
