@@ -48,9 +48,16 @@ class GetOptOuts extends GetRequest
 
         if ($response->isSuccess()) {
             $data = $response->getData();
-            if ($data && isset($data->attributes->optOuts)) {
-                foreach ($data->attributes->optOuts as $item) {
-                    $optOuts[] = OptOut::fromArray((array) $item);
+            // getData() returns stdClass, convert to array for safe access
+            if (is_object($data)) {
+                $data = (array) $data;
+            }
+            if ($data && isset($data['attributes'])) {
+                $attributes = is_object($data['attributes']) ? (array) $data['attributes'] : $data['attributes'];
+                if (isset($attributes['optOuts'])) {
+                    foreach ($attributes['optOuts'] as $item) {
+                        $optOuts[] = OptOut::fromArray((array) $item);
+                    }
                 }
             }
         }

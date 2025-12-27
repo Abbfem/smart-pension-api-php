@@ -36,8 +36,12 @@ class GetContributionStatus extends GetRequest
 
         if ($response->isSuccess()) {
             $data = $response->getData();
+            // getData() returns stdClass, convert to array for safe access
+            if (is_object($data)) {
+                $data = (array) $data;
+            }
             if ($data) {
-                return ContributionsStatus::fromArray((array) $data);
+                return ContributionsStatus::fromArray($data);
             }
         }
 
