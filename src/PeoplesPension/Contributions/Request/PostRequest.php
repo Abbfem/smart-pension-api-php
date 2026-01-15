@@ -39,8 +39,32 @@ abstract class PostRequest extends ContributionsRequest
 
     protected function getHTTPClientOptions(): array
     {
+        // Use custom JSON encoding with recursive float formatting to avoid
+        // floating-point precision issues (e.g., 93.55 becoming 93.5499999999...)
+        $data = $this->formatFloatsRecursive($this->postBody->toArray());
+        
         return array_merge([
-            'json' => $this->postBody->toArray(),
+            'body' => json_encode($data),
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
         ], parent::getHTTPClientOptions());
+    }
+
+    /**
+     * Recursively format all float values in an array to avoid precision issues.
+     */
+    private function formatFloatsRecursive(array $data): array
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                $data[$key] = $this->formatFloatsRecursive($value);
+            } elseif (is_float($value)) {
+                // Format to 2 decimal places and cast back to float
+                // This creates a "clean" float that JSON encodes correctly
+                $data[$key] = (float) number_format($value, 2, '.', '');
+            }
+        }
+        return $data;
     }
 }
