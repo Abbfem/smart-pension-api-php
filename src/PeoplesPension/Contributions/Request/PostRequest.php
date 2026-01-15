@@ -39,12 +39,19 @@ abstract class PostRequest extends ContributionsRequest
 
     protected function getHTTPClientOptions(): array
     {
-        // Use custom JSON encoding with recursive float formatting to avoid
-        // floating-point precision issues (e.g., 93.55 becoming 93.5499999999...)
+        // Temporarily set serialize_precision to avoid floating-point precision issues
+        // (e.g., 93.55 becoming 93.5499999999...)
+        $originalPrecision = ini_get('serialize_precision');
+        ini_set('serialize_precision', '14');
+        
         $data = $this->formatFloatsRecursive($this->postBody->toArray());
+        $json = json_encode($data);
+        
+        // Restore original precision setting
+        ini_set('serialize_precision', $originalPrecision);
         
         return array_merge([
-            'body' => json_encode($data),
+            'body' => $json,
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
@@ -53,6 +60,7 @@ abstract class PostRequest extends ContributionsRequest
 
     /**
      * Recursively format all float values in an array to avoid precision issues.
+     * Uses round() to ensure values are properly rounded to 2 decimal places.
      */
     private function formatFloatsRecursive(array $data): array
     {
@@ -60,9 +68,9 @@ abstract class PostRequest extends ContributionsRequest
             if (is_array($value)) {
                 $data[$key] = $this->formatFloatsRecursive($value);
             } elseif (is_float($value)) {
-                // Format to 2 decimal places and cast back to float
-                // This creates a "clean" float that JSON encodes correctly
-                $data[$key] = (float) number_format($value, 2, '.', '');
+                // Round to 2 decimal places - combined with serialize_precision=14,
+                // this ensures clean JSON output like 93.55 instead of 93.549999...
+                $data[$key] = round($value, 2);
             }
         }
         return $data;
