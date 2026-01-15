@@ -113,9 +113,9 @@ class EmployeeContribution
             'employmentPeriod' => $this->employmentPeriod->toArray(),
             'workerGroupId' => $this->workerGroupId,
             'autoEnrolmentStatus' => $this->autoEnrolmentStatus,
-            'pensionableEarnings' => $this->pensionableEarnings,
-            'employerContributionAmount' => $this->employerContributionAmount,
-            'employeeContributionAmount' => $this->employeeContributionAmount,
+            'pensionableEarnings' => round($this->pensionableEarnings, 2),
+            'employerContributionAmount' => round($this->employerContributionAmount, 2),
+            'employeeContributionAmount' => round($this->employeeContributionAmount, 2),
         ];
 
         // Add optional fields only if they have values
