@@ -33,7 +33,7 @@ class ContributionsPostBody implements PostBody
         $this->accountId = $accountId;
         $this->payReferencePeriod = $payReferencePeriod;
         $this->employees = $employees;
-        $this->total = $total;
+        $this->total = round($total, 2);
     }
 
     /**
@@ -50,7 +50,7 @@ class ContributionsPostBody implements PostBody
             accountId: $data['accountId'],
             payReferencePeriod: DateRange::fromArray($data['payReferencePeriod']),
             employees: $employees,
-            total: (float) $data['total']
+            total: (float) round($data['total'], 2)
         );
     }
 
@@ -130,7 +130,7 @@ class ContributionsPostBody implements PostBody
     {
         $this->total = 0;
         foreach ($this->employees as $employee) {
-            $this->total += $employee->getTotalContribution();
+            $this->total += round($employee->getTotalContribution(), 2);
         }
         return $this;
     }
