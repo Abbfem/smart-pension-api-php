@@ -108,7 +108,7 @@ class ContributionsPostBody implements PostBody
                     'accountId' => $this->accountId,
                     'payReferencePeriod' => $this->payReferencePeriod->toArray(),
                     'employees' => $employees,
-                    'total' => round($this->total, 2),
+                    'total' => (float) sprintf('%.2f', $this->total),
                 ],
             ],
         ];
