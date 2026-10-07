@@ -17,8 +17,8 @@ class Environment
     public const SANDBOX = 'sandbox';
     public const LIVE = 'live';
 
-    /** Base URLs for environments */
-    public const SANDBOX_BASE_URL = 'https://ws-test.nestpensions.org.uk';
+    /** Base URLs for environments (test = NEST's PTF web services, IP-whitelisted) */
+    public const SANDBOX_BASE_URL = 'https://netews.nestpensions.org.uk';
     public const LIVE_BASE_URL = 'https://ws.nestpensions.org.uk';
 
     private static ?self $instance = null;
@@ -39,6 +39,12 @@ class Environment
 
     /** @var string Password for HTTP Basic Auth */
     private string $password = '';
+
+    /** @var string|null Base URL override; null uses the environment default */
+    private ?string $baseUrlOverride = null;
+
+    /** @var string|null Outbound HTTP proxy, e.g. http://user:pass@203.0.113.10:3128 */
+    private ?string $proxy = null;
 
     private function __construct()
     {
@@ -103,7 +109,38 @@ class Environment
      */
     public function getBaseUrl(): string
     {
+        if ($this->baseUrlOverride !== null) {
+            return $this->baseUrlOverride;
+        }
+
         return $this->isSandbox() ? self::SANDBOX_BASE_URL : self::LIVE_BASE_URL;
+    }
+
+    /**
+     * Override the base URL for the current environment. Pass null or an
+     * empty string to go back to the environment default.
+     */
+    public function setBaseUrl(?string $baseUrl): void
+    {
+        $baseUrl = $baseUrl === null ? '' : trim($baseUrl);
+
+        $this->baseUrlOverride = $baseUrl === '' ? null : rtrim($baseUrl, '/');
+    }
+
+    /**
+     * Route API requests through an outbound proxy, for test environments that
+     * only accept whitelisted IPs. Pass null or an empty string to connect directly.
+     */
+    public function setProxy(?string $proxy): void
+    {
+        $proxy = $proxy === null ? '' : trim($proxy);
+
+        $this->proxy = $proxy === '' ? null : $proxy;
+    }
+
+    public function getProxy(): ?string
+    {
+        return $this->proxy;
     }
 
     /**

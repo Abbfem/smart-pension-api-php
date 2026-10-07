@@ -42,11 +42,17 @@ class Client
         $this->maxRetries = $maxRetries ?? 3;
         $this->logger = $logger ?? new Logger(false);
 
-        $this->httpClient = new GuzzleClient([
+        $options = [
             RequestOptions::TIMEOUT => $this->timeout,
             RequestOptions::CONNECT_TIMEOUT => 10,
             RequestOptions::VERIFY => true,
-        ]);
+        ];
+
+        if ($env->getProxy() !== null) {
+            $options[RequestOptions::PROXY] = $env->getProxy();
+        }
+
+        $this->httpClient = new GuzzleClient($options);
 
         $this->requestBuilder = new RequestBuilder($this->auth);
     }
