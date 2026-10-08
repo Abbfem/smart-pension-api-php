@@ -4,6 +4,34 @@
 
 This library can be used to connect and does operations on SMART API https://developers.autoenrolment.co.uk/smart/451fbda1e0bde-introduction.
 
+## Smart Pension API v12 client (all endpoints)
+
+`SMART\Api\SmartClient` exposes every Smart Pension (Keystone) endpoint through resource classes.
+
+```bash
+composer require shynne109/smart-pension-api-php
+```
+
+```php
+use SMART\Api\Exceptions\ApiException;
+use SMART\Api\SmartClient;
+use SMART\Scope\Scope;
+
+$smart = SmartClient::withClientCredentials($clientId, $clientSecret, [Scope::SMP_COMPANIES], ['environment' => 'sandbox']);
+
+try {
+    $companies = $smart->companies()->listCompanies(['limit' => 10])->getArray();
+} catch (ApiException $e) {
+    echo $e->getStatusCode().': '.$e->getMessage();
+}
+```
+
+- [Usage guide](docs/smart/README.md)
+- [All endpoints](docs/smart/endpoints.md)
+- [Runnable examples](examples/smart-pension/api/)
+
+The legacy per-endpoint request classes (`SMART\Company\...`, `SMART\Employee\...`) still work.
+
 ## How to use
 
 For user-restricted API call, please see the next section.
@@ -34,7 +62,7 @@ $provider = new \SMART\Oauth2\Provider(
     $_GET[ 'client_secret' ],
     $callbackUri
 );
-$scope = [ \SMART\Scope\Scope::VAT_READ, \SMART\Scope\Scope::HELLO, \SMART\Scope\Scope::VAT_WRITE ];
+$scope = [ \SMART\Scope\Scope::SMP_USER, \SMART\Scope\Scope::SMP_CUSTOMER ];
 $provider->redirectToAuthorizationURL($scope);
 ```
 After user grant authorize on SMART authorization page, it will redirect back to `$callbackUri`, which in the example above, the callback.php file.
@@ -61,12 +89,12 @@ exit;
 ```
 You need to use `\SMART\Oauth2\AccessToken` class to get and set access token. The class that do the request will get Access Token from this class.
 
-After get the access token and save it inside `\SMART\Oauth2\AccessToken`, we can start calling user-restricted API. For example, here is the request to hello user endpoint.
+After get the access token and save it inside `\SMART\Oauth2\AccessToken`, we can start calling user-restricted API. For example, here is a request listing companies through `SmartClient::fromSession()`.
 ```php
 <?php
 
-$request = new \SMART\Hello\HelloUserRequest;
-$response = $request->fire();
+$smart = \SMART\Api\SmartClient::fromSession();
+$response = $smart->companies()->listCompanies(['limit' => 10]);
 
 return $response->getBody();
 ```

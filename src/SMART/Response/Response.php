@@ -26,6 +26,40 @@ class Response
     }
 
     /**
+     * Check if the response has any 2xx status code (200, 201, 204...).
+     *
+     * @return bool
+     */
+    public function isSuccessful(): bool
+    {
+        $status = $this->response->getStatusCode();
+
+        return $status >= 200 && $status < 300;
+    }
+
+    /**
+     * Get the HTTP status code.
+     *
+     * @return int
+     */
+    public function getStatusCode(): int
+    {
+        return $this->response->getStatusCode();
+    }
+
+    /**
+     * Get a response header as a comma separated string.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public function getHeaderLine(string $name): string
+    {
+        return $this->response->getHeaderLine($name);
+    }
+
+    /**
      * Get the response body.
      *
      * @return \Psr\Http\Message\StreamInterface
