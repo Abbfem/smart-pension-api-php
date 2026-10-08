@@ -183,21 +183,57 @@ class SmartClient
 
         while (true) {
             $page = $fetch(array_merge($query, ['limit' => $pageSize, 'offset' => $offset]))->getArray();
-
-            // some list endpoints return a bare array instead of the {total, data} envelope
-            $items = is_array($page) && array_key_exists('data', $page) ? (array) $page['data'] : (array) $page;
+            $items = self::listItems($page);
 
             foreach ($items as $item) {
                 yield $item;
             }
 
             $offset += count($items);
-            $total = $page['total'] ?? null;
+            $total = is_array($page) && isset($page['total']) && is_numeric($page['total']) ? (int) $page['total'] : null;
 
-            if (!isset($page['data']) || count($items) < $pageSize || ($total !== null && $offset >= $total)) {
+            // A bare array has no paging metadata: treat it as the whole list rather than
+            // risk re-fetching the same page from an endpoint that ignores offset.
+            $isBareList = !is_array($page) || array_is_list($page);
+
+            if ($isBareList || count($items) === 0 || count($items) < $pageSize || ($total !== null && $offset >= $total)) {
                 return;
             }
         }
+    }
+
+    /**
+     * The items of one list page. Keystone wraps lists as {total, links, <resource>: [...]}
+     * (for example "employees", "contributions", "payments", "enrolments"); a few endpoints
+     * use "data" or return a bare array.
+     *
+     * @param mixed $page decoded response body
+     *
+     * @return array<int, mixed>
+     */
+    public static function listItems($page): array
+    {
+        if (!is_array($page)) {
+            return [];
+        }
+
+        if (array_is_list($page)) {
+            return $page;
+        }
+
+        if (isset($page['data']) && is_array($page['data'])) {
+            return $page['data'];
+        }
+
+        foreach ($page as $key => $value) {
+            if ($key === 'links' || $key === 'meta' || !is_array($value) || !array_is_list($value)) {
+                continue;
+            }
+
+            return $value;
+        }
+
+        return [];
     }
 
     /**

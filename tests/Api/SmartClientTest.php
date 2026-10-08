@@ -276,6 +276,36 @@ class SmartClientTest extends ApiTestCase
         $this->assertSame([1, 2], $items);
         $this->assertCount(1, $this->history);
     }
+
+    /** @test */
+    public function paginate_reads_keystone_resource_keys_and_skips_links()
+    {
+        $links = [['rel' => 'first', 'href' => '/x?offset=0'], ['rel' => 'last', 'href' => '/x?offset=2']];
+        $client = $this->makeClient([
+            $this->ok(['total' => 3, 'links' => $links, 'employees' => [['id' => 1], ['id' => 2]]]),
+            $this->ok(['total' => 3, 'links' => $links, 'employees' => [['id' => 3]]]),
+        ]);
+
+        $items = iterator_to_array($client->paginate(function ($q) use ($client) {
+            return $client->request('GET', '/companies/1/employees', ['query' => $q]);
+        }, [], 2), false);
+
+        $this->assertSame([['id' => 1], ['id' => 2], ['id' => 3]], $items);
+        $this->assertCount(2, $this->history);
+    }
+
+    /** @test */
+    public function paginate_treats_a_bare_array_as_the_whole_list()
+    {
+        $client = $this->makeClient([$this->ok([['id' => 1], ['id' => 2]])]);
+
+        $items = iterator_to_array($client->paginate(function ($q) use ($client) {
+            return $client->request('GET', '/things', ['query' => $q]);
+        }, [], 2), false);
+
+        $this->assertSame([['id' => 1], ['id' => 2]], $items);
+        $this->assertCount(1, $this->history);
+    }
 }
 
 function urldecode_brackets(string $query): string
